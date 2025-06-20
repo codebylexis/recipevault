@@ -1,6 +1,6 @@
 'use client';
+
 import { useState } from 'react';
-import ReactMarkdown from 'react-markdown';
 import { useRouter } from 'next/navigation';
 
 export default function NewRecipePage() {
@@ -10,8 +10,6 @@ export default function NewRecipePage() {
   const [tags, setTags] = useState('');
   const [image, setImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -21,53 +19,90 @@ export default function NewRecipePage() {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!title.trim() || !content.trim()) return setError('Title and content are required');
 
-    setLoading(true);
-    setError('');
     const token = localStorage.getItem('token');
-    if (!token) return setError('Please log in.');
+    if (!token) return alert('Please log in.');
 
-    const fd = new FormData();
-    fd.append('title', title);
-    fd.append('content', content);
-    fd.append('tags', tags);
-    if (image) fd.append('image', image);
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('content', content);
+    formData.append('tags', tags);
+    if (image) formData.append('image', image);
 
     try {
       const res = await fetch('http://localhost:4000/api/recipes', {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` },
-        body: fd,
+        body: formData,
       });
-      if (!res.ok) throw new Error(await res.text());
-      router.push('/dashboard');
-    } catch (err: any) {
+
+      if (!res.ok) throw new Error('Failed to create recipe');
+
+      const data = await res.json();
+      router.push(`/recipes/${data.id}`);
+    } catch (err) {
       console.error(err);
-      setError(err.message || 'Failed to create');
-    } finally {
-      setLoading(false);
+      alert('Something went wrong');
     }
   };
 
   return (
     <div className="p-8 max-w-4xl mx-auto">
-      <h1 className="text-3xl font-bold mb-4">New Recipe</h1>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {error && <p className="text-red-600">{error}</p>}
-        {/* Title, Tags, Content, Image upload */}
-        {/* Same structure as before */}
+      <h1 className="text-3xl font-bold mb-6">New Recipe</h1>
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div>
+          <label className="block font-medium">Title</label>
+          <input
+            type="text"
+            className="w-full border px-3 py-2 rounded mt-1"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            required
+          />
+        </div>
+
+        <div>
+          <label className="block font-medium">Instructions (Markdown)</label>
+          <textarea
+            rows={10}
+            className="w-full border px-3 py-2 rounded mt-1"
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            required
+          />
+        </div>
+
+        <div>
+          <label className="block font-medium">Tags (comma-separated)</label>
+          <input
+            type="text"
+            className="w-full border px-3 py-2 rounded mt-1"
+            value={tags}
+            onChange={(e) => setTags(e.target.value)}
+          />
+        </div>
+
+        <div>
+          <label className="block font-medium">Upload Image</label>
+          <input type="file" accept="image/*" onChange={handleImageChange} />
+          {previewUrl && (
+            <img
+              src={previewUrl}
+              alt="Preview"
+              className="mt-4 h-40 object-cover border rounded"
+            />
+          )}
+        </div>
+
         <button
           type="submit"
-          disabled={loading}
-          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 disabled:opacity-50"
+          className="bg-green-600 text-white py-2 px-6 rounded hover:bg-green-700 transition"
         >
-          {loading ? 'Creating...' : 'Create Recipe'}
+          Create Recipe
         </button>
       </form>
-      {/* Markdown Live Preview */}
     </div>
   );
 }

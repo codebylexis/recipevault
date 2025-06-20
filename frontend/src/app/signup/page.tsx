@@ -1,80 +1,92 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
 
-export default function SignupPage() {
-  const router = useRouter();
+interface Recipe {
+  id: string;
+  title: string;
+  imageUrl?: string;
+  tags?: { name: string }[];
+}
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+export default function ExploreRecipes() {
+  const [recipes, setRecipes] = useState<Recipe[]>([]);
+  const [search, setSearch] = useState('');
+  const [tag, setTag] = useState('');
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError('');
+  useEffect(() => {
+    const query = new URLSearchParams();
+    if (search) query.append('q', search);
+    if (tag) query.append('tag', tag);
 
-    try {
-      const res = await fetch('http://localhost:4000/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        setError(data.message || 'Something went wrong');
-        return;
-      }
-
-      // Store token (for now in localStorage; in production, use secure cookie)
-      localStorage.setItem('token', data.token);
-
-      // Redirect to dashboard (you'll build this later)
-      router.push('/dashboard');
-    } catch (err: any) {
-      setError('Server error. Please try again later.');
-    }
-  };
+    fetch(`http://localhost:4000/api/recipes/public?${query.toString()}`)
+      .then((res) => res.json())
+      .then((data) => setRecipes(data));
+  }, [search, tag]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
-      <div className="max-w-md w-full bg-white p-6 rounded-lg shadow-md">
-        <h1 className="text-2xl font-bold mb-4 text-center">Sign Up</h1>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {error && <p className="text-red-500 text-sm">{error}</p>}
-          <div>
-            <label className="block text-sm font-medium">Email</label>
-            <input
-              type="email"
-              className="mt-1 w-full border rounded px-3 py-2"
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium">Password</label>
-            <input
-              type="password"
-              className="mt-1 w-full border rounded px-3 py-2"
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-              required
-            />
-          </div>
-          <button
-            type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
-          >
-            Sign Up
-          </button>
-        </form>
-        <p className="mt-4 text-center text-sm">
-          Already have an account? <a href="/login" className="text-blue-600 underline">Log in</a>
-        </p>
+    <div className="max-w-6xl mx-auto p-6">
+      <h1 className="text-3xl font-bold mb-6">Explore Recipes 🍽️</h1>
+
+      <div className="flex flex-col sm:flex-row gap-4 mb-8">
+        <input
+          placeholder="Search by keyword..."
+          className="border px-3 py-2 rounded w-full"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <input
+          placeholder="Filter by tag (e.g. Italian)"
+          className="border px-3 py-2 rounded w-full sm:w-60"
+          value={tag}
+          onChange={(e) => setTag(e.target.value)}
+        />
       </div>
+
+      {recipes.length === 0 ? (
+        <p className="text-gray-600">No recipes found.</p>
+      ) : (
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {recipes.map((recipe) => (
+            <div
+              key={recipe.id}
+              className="border rounded-lg overflow-hidden hover:shadow transition"
+            >
+              {recipe.imageUrl && (
+                <Image
+                  src={`http://localhost:4000${recipe.imageUrl}`}
+                  alt={recipe.title}
+                  width={600}
+                  height={300}
+                  className="w-full h-40 object-cover"
+                />
+              )}
+              <div className="p-4 space-y-1">
+                <h2 className="text-lg font-semibold">{recipe.title}</h2>
+                <div className="flex flex-wrap gap-1 text-xs text-gray-600">
+                  {recipe.tags?.map((t) => (
+                    <span
+                      key={t.name}
+                      className="bg-gray-200 px-2 py-1 rounded cursor-pointer"
+                      onClick={() => setTag(t.name)}
+                    >
+                      #{t.name}
+                    </span>
+                  ))}
+                </div>
+                <Link
+                  href={`/recipes/${recipe.id}`}
+                  className="text-blue-600 text-sm underline"
+                >
+                  View Recipe
+                </Link>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
