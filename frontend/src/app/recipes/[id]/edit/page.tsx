@@ -2,7 +2,14 @@
 
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
+import Image from 'next/image';
 import ReactMarkdown from 'react-markdown';
+
+interface Recipe {
+  title: string;
+  content: string;
+  imageUrl?: string;
+}
 
 export default function EditRecipePage() {
   const { id } = useParams();
@@ -14,26 +21,40 @@ export default function EditRecipePage() {
   const [previewUrl, setPreviewUrl] = useState('');
   const [loading, setLoading] = useState(true);
 
+  // ─────────────────────────────────────────────
+  // Fetch existing recipe
+  // ─────────────────────────────────────────────
   useEffect(() => {
+    const controller = new AbortController();
+
     const fetchRecipe = async () => {
       try {
-        const res = await fetch(`http://localhost:4000/api/recipes/${id}`);
-        const data = await res.json();
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/recipes/${id}`,
+          { signal: controller.signal }
+        );
+        const data: Recipe = await res.json();
+
         setTitle(data.title);
         setMarkdown(data.content);
         if (data.imageUrl) {
-          setPreviewUrl(`http://localhost:4000${data.imageUrl}`);
+          setPreviewUrl(`${process.env.NEXT_PUBLIC_API_URL}${data.imageUrl}`);
         }
       } catch (err) {
         console.error('❌ Failed to load recipe:', err);
+        alert('Failed to load recipe.');
       } finally {
         setLoading(false);
       }
     };
 
     fetchRecipe();
+    return () => controller.abort();
   }, [id]);
 
+  // ─────────────────────────────────────────────
+  // Handlers
+  // ─────────────────────────────────────────────
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -42,9 +63,8 @@ export default function EditRecipePage() {
     }
   };
 
-  const handleUpdate = async (e: React.FormEvent) => {
+  const handleUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     const token = localStorage.getItem('token');
     if (!token) return alert('Please log in.');
 
@@ -54,14 +74,16 @@ export default function EditRecipePage() {
     if (image) formData.append('image', image);
 
     try {
-      const res = await fetch(`http://localhost:4000/api/recipes/${id}`, {
-        method: 'PUT',
-        headers: { Authorization: `Bearer ${token}` },
-        body: formData,
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/recipes/${id}`,
+        {
+          method: 'PUT',
+          headers: { Authorization: `Bearer ${token}` },
+          body: formData,
+        }
+      );
 
-      if (!res.ok) throw new Error('Failed to update');
-
+      if (!res.ok) throw new Error('Update failed');
       alert('Recipe updated!');
       router.push(`/recipes/${id}`);
     } catch (err) {
@@ -70,42 +92,53 @@ export default function EditRecipePage() {
     }
   };
 
-  if (loading) return <p className="p-10">Loading...</p>;
+  if (loading) {
+    return <p className="p-10 text-center">Loading…</p>;
+  }
 
+  // ─────────────────────────────────────────────
+  // UI
+  // ─────────────────────────────────────────────
   return (
     <div className="p-8 max-w-4xl mx-auto">
       <h1 className="text-3xl font-bold mb-6">✏️ Edit Recipe</h1>
+
       <form onSubmit={handleUpdate} className="space-y-6">
+        {/* Title */}
         <div>
           <label className="block font-medium">Title</label>
           <input
             type="text"
             className="w-full border px-3 py-2 rounded mt-1"
             value={title}
-            onChange={e => setTitle(e.target.value)}
+            onChange={(e) => setTitle(e.target.value)}
             required
           />
         </div>
 
+        {/* Markdown */}
         <div>
           <label className="block font-medium">Markdown Content</label>
           <textarea
             rows={10}
             className="w-full border px-3 py-2 rounded mt-1"
             value={markdown}
-            onChange={e => setMarkdown(e.target.value)}
+            onChange={(e) => setMarkdown(e.target.value)}
             required
           />
         </div>
 
+        {/* Image */}
         <div>
           <label className="block font-medium">Update Image (optional)</label>
           <input type="file" accept="image/*" onChange={handleImageChange} />
           {previewUrl && (
-            <img
+            <Image
               src={previewUrl}
-              alt="Preview"
-              className="mt-4 h-40 object-cover border rounded"
+              alt="Current recipe image"
+              width={400}
+              height={200}
+              className="mt-4 object-cover border rounded"
             />
           )}
         </div>
@@ -118,8 +151,9 @@ export default function EditRecipePage() {
         </button>
       </form>
 
+      {/* Live Preview */}
       <div className="mt-10">
-        <h2 className="text-2xl font-semibold mb-2">Live Preview:</h2>
+        <h2 className="text-2xl font-semibold mb-2">Live Preview</h2>
         <div className="prose max-w-none bg-white p-4 rounded shadow">
           <ReactMarkdown>{markdown}</ReactMarkdown>
         </div>

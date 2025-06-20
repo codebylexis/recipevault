@@ -1,144 +1,95 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
-import ReactMarkdown from 'react-markdown';
+import Link from 'next/link';
+import Image from 'next/image';
 
-export default function EditRecipePage() {
-  const { id } = useParams();
-  const router = useRouter();
+interface Recipe {
+  id: string;
+  title: string;
+  imageUrl?: string;
+  tags?: { name: string }[];
+}
 
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-  const [tags, setTags] = useState('');
-  const [image, setImage] = useState<File | null>(null);
-  const [previewUrl, setPreviewUrl] = useState('');
-
-  const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+export default function ExploreRecipesPage() {
+  const [recipes, setRecipes] = useState<Recipe[]>([]);
+  const [search, setSearch] = useState('');
+  const [tag, setTag] = useState('');
 
   useEffect(() => {
-    if (!token) {
-      router.push('/login');
-      return;
-    }
+    const query = new URLSearchParams();
+    if (search) query.append('q', search);
+    if (tag) query.append('tag', tag);
 
-    const fetchRecipe = async () => {
-      try {
-        const res = await fetch(`http://localhost:4000/api/recipes/${id}`);
-        const data = await res.json();
-        setTitle(data.title);
-        setContent(data.content);
-        setTags(data.tags?.map((t: any) => t.name).join(', ') || '');
-        setPreviewUrl(data.imageUrl ? `http://localhost:4000${data.imageUrl}` : '');
-      } catch (err) {
-        alert('Failed to load recipe.');
-        console.error(err);
-      }
-    };
-
-    fetchRecipe();
-  }, [id, token]);
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setImage(file);
-      setPreviewUrl(URL.createObjectURL(file));
-    }
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!token) return alert('Not logged in.');
-
-    const formData = new FormData();
-    formData.append('title', title);
-    formData.append('content', content);
-    formData.append('tags', tags);
-    if (image) formData.append('image', image);
-
-    try {
-      const res = await fetch(`http://localhost:4000/api/recipes/${id}`, {
-        method: 'PATCH',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: formData,
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/recipes/public?${query.toString()}`)
+      .then(res => res.json())
+      .then(setRecipes)
+      .catch(err => {
+        console.error('❌ Failed to load public recipes:', err);
       });
-
-      if (!res.ok) throw new Error('Update failed');
-
-      alert('Recipe updated!');
-      router.push('/dashboard');
-    } catch (err) {
-      console.error(err);
-      alert('Something went wrong');
-    }
-  };
+  }, [search, tag]);
 
   return (
-    <div className="p-8 max-w-4xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6">Edit Recipe</h1>
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div>
-          <label className="block font-medium">Title</label>
-          <input
-            type="text"
-            className="w-full border px-3 py-2 rounded mt-1"
-            value={title}
-            onChange={e => setTitle(e.target.value)}
-            required
-          />
-        </div>
+    <div className="max-w-6xl mx-auto p-6">
+      <h1 className="text-3xl font-bold mb-4">Explore Recipes 🍽️</h1>
 
-        <div>
-          <label className="block font-medium">Markdown Instructions</label>
-          <textarea
-            rows={10}
-            className="w-full border px-3 py-2 rounded mt-1"
-            value={content}
-            onChange={e => setContent(e.target.value)}
-            required
-          />
-        </div>
-
-        <div>
-          <label className="block font-medium">Tags (comma-separated)</label>
-          <input
-            type="text"
-            className="w-full border px-3 py-2 rounded mt-1"
-            value={tags}
-            onChange={e => setTags(e.target.value)}
-          />
-        </div>
-
-        <div>
-          <label className="block font-medium">Replace Image</label>
-          <input type="file" accept="image/*" onChange={handleImageChange} />
-          {previewUrl && (
-            <img
-              src={previewUrl}
-              alt="Preview"
-              className="mt-4 h-40 object-cover border rounded"
-            />
-          )}
-        </div>
-
-        <button
-          type="submit"
-          className="bg-green-600 text-white py-2 px-6 rounded hover:bg-green-700 transition"
-        >
-          Save Changes
-        </button>
-      </form>
-
-      <div className="mt-10">
-        <h2 className="text-2xl font-semibold mb-2">Live Preview</h2>
-        <div className="prose max-w-none bg-white p-4 rounded shadow">
-          <ReactMarkdown>{content}</ReactMarkdown>
-        </div>
+      <div className="flex gap-4 mb-6">
+        <input
+          placeholder="Search by keyword..."
+          className="border px-3 py-2 rounded w-full"
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+        />
+        <input
+          placeholder="Filter by tag (e.g. Vegan, Thai)"
+          className="border px-3 py-2 rounded"
+          value={tag}
+          onChange={e => setTag(e.target.value)}
+        />
       </div>
+
+      {recipes.length === 0 ? (
+        <p>No recipes found.</p>
+      ) : (
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {recipes.map(recipe => (
+            <div
+              key={recipe.id}
+              className="border rounded overflow-hidden hover:shadow transition"
+            >
+              {recipe.imageUrl && (
+                <Image
+                  src={`${process.env.NEXT_PUBLIC_API_URL}${recipe.imageUrl}`}
+                  alt={recipe.title}
+                  width={500}
+                  height={200}
+                  className="w-full h-40 object-cover"
+                />
+              )}
+              <div className="p-4 space-y-1">
+                <h2 className="text-lg font-semibold">{recipe.title}</h2>
+                <div className="flex flex-wrap gap-1 text-xs text-gray-600">
+                  {recipe.tags?.map(t => (
+                    <span
+                      key={t.name}
+                      className="bg-gray-200 px-2 py-1 rounded cursor-pointer"
+                      onClick={() => setTag(t.name)}
+                    >
+                      #{t.name}
+                    </span>
+                  ))}
+                </div>
+                <Link
+                  href={`/recipes/${recipe.id}`}
+                  className="text-blue-600 text-sm underline"
+                >
+                  View Recipe
+                </Link>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
