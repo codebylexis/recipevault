@@ -13,16 +13,18 @@ export default function Navbar() {
   const pathname = usePathname();
 
   return (
-    <header className="bg-white shadow-sm sticky top-0 z-50">
+    <header className="bg-[#1f1f1f] text-white shadow-md sticky top-0 z-50 font-serif">
       <div className="max-w-screen-xl mx-auto flex items-center justify-between p-4">
-        <Link href="/" className="text-xl font-bold text-green-600">🍽️ RecipeVault</Link>
-        <nav className="flex gap-4 text-sm">
+        <Link href="/" className="text-xl font-semibold tracking-tight text-white">
+          RecipeVault
+        </Link>
+        <nav className="flex gap-6 text-sm">
           {navItems.map((item) => (
             <Link
               key={item.path}
               href={item.path}
-              className={`hover:text-green-700 ${
-                pathname === item.path ? 'text-green-600 font-semibold' : 'text-gray-700'
+              className={`transition hover:text-gray-300 ${
+                pathname === item.path ? 'text-gray-100 underline' : 'text-gray-400'
               }`}
             >
               {item.name}
