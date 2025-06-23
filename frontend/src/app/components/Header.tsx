@@ -17,35 +17,37 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-white dark:bg-black shadow-md sticky top-0 z-50">
-      <nav className="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
-        <Link href="/" className="text-xl font-bold text-green-600 hover:text-green-700">
-          🍽️ RecipeVault
+    <header className="bg-[#1f1f1f] text-white shadow-md sticky top-0 z-50 font-serif">
+      <nav className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+        <Link href="/" className="text-2xl font-semibold tracking-tight">
+          RecipeVault
         </Link>
 
         <div className="flex items-center gap-6 text-sm">
-          <Link href="/recipes" className="hover:underline">
+          <Link href="/recipes" className="hover:underline hover:text-gray-300 transition">
             Explore
           </Link>
-          {isLoggedIn && (
+          {isLoggedIn ? (
             <>
-              <Link href="/dashboard" className="hover:underline">
+              <Link href="/dashboard" className="hover:underline hover:text-gray-300 transition">
                 Dashboard
               </Link>
-              <Link href="/recipes/new" className="hover:underline">
+              <Link href="/recipes/new" className="hover:underline hover:text-gray-300 transition">
                 New Recipe
               </Link>
-              <button onClick={handleLogout} className="text-red-600 hover:underline">
+              <button
+                onClick={handleLogout}
+                className="text-red-400 hover:text-red-300 transition"
+              >
                 Logout
               </button>
             </>
-          )}
-          {!isLoggedIn && (
+          ) : (
             <>
-              <Link href="/login" className="hover:underline">
+              <Link href="/login" className="hover:underline hover:text-gray-300 transition">
                 Login
               </Link>
-              <Link href="/register" className="hover:underline">
+              <Link href="/signup" className="hover:underline hover:text-gray-300 transition">
                 Register
               </Link>
             </>
