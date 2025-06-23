@@ -10,7 +10,7 @@ export default function HomePage() {
       <section className="relative text-center">
         <div
           className="absolute inset-0 bg-cover bg-center opacity-60"
-          style={{ backgroundImage: "url('/wood-bg.jpg')" }}
+          style={{ backgroundImage: "url('/wood-texture.jpg')" }}
         />
         <div className="relative z-10 px-6 py-32">
           <h1 className="text-5xl font-semibold mb-4">RecipeVault</h1>
