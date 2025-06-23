@@ -20,7 +20,7 @@ export default function HomePage() {
           <div className="flex justify-center gap-4">
             <Link
               href="/signup"
-              className="bg-white text-black px-6 py-3 rounded hover:bg-gray-200 transition"
+              className="border border-white px-6 py-3 rounded text-white hover:bg-white hover:text-black transition"
             >
               Create an Account
             </Link>
