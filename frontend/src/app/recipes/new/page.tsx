@@ -49,14 +49,14 @@ export default function NewRecipePage() {
   };
 
   return (
-    <div className="p-8 max-w-4xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6">New Recipe</h1>
+    <div className="p-8 max-w-4xl mx-auto font-serif text-[#3c2f28]">
+      <h1 className="text-3xl font-semibold mb-6">New Recipe</h1>
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
-          <label className="block font-medium">Title</label>
+          <label className="block font-medium mb-1">Title</label>
           <input
             type="text"
-            className="w-full border px-3 py-2 rounded mt-1"
+            className="w-full border border-[#d6c7b0] bg-[#fdfaf5] px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-[#c9a27e]"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             required
@@ -64,10 +64,10 @@ export default function NewRecipePage() {
         </div>
 
         <div>
-          <label className="block font-medium">Instructions (Markdown)</label>
+          <label className="block font-medium mb-1">Instructions (Markdown)</label>
           <textarea
             rows={10}
-            className="w-full border px-3 py-2 rounded mt-1"
+            className="w-full border border-[#d6c7b0] bg-[#fdfaf5] px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-[#c9a27e]"
             value={content}
             onChange={(e) => setContent(e.target.value)}
             required
@@ -75,18 +75,23 @@ export default function NewRecipePage() {
         </div>
 
         <div>
-          <label className="block font-medium">Tags (comma-separated)</label>
+          <label className="block font-medium mb-1">Tags (comma-separated)</label>
           <input
             type="text"
-            className="w-full border px-3 py-2 rounded mt-1"
+            className="w-full border border-[#d6c7b0] bg-[#fdfaf5] px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-[#c9a27e]"
             value={tags}
             onChange={(e) => setTags(e.target.value)}
           />
         </div>
 
         <div>
-          <label className="block font-medium">Upload Image</label>
-          <input type="file" accept="image/*" onChange={handleImageChange} />
+          <label className="block font-medium mb-1">Upload Image</label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            className="text-sm text-[#6c584c]"
+          />
           {previewUrl && (
             <img
               src={previewUrl}
@@ -98,7 +103,7 @@ export default function NewRecipePage() {
 
         <button
           type="submit"
-          className="bg-green-600 text-white py-2 px-6 rounded hover:bg-green-700 transition"
+          className="bg-[#8b5e3c] text-white py-2 px-6 rounded hover:bg-[#6c4226] transition"
         >
           Create Recipe
         </button>

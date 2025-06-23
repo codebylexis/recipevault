@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface Recipe {
   id: string;
@@ -30,45 +31,50 @@ export default function HomePage() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen bg-[#f5f3ef] text-[#3c2f28] font-serif">
       {/* Hero section */}
-      <section className="bg-gradient-to-r from-green-100 to-green-200 py-20 text-center">
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">🍽️ Welcome to RecipeVault</h1>
-        <p className="text-lg text-gray-700 mb-6">
-          Discover, create, and manage your favorite recipes in one place.
-        </p>
-        <Link
-          href="/explore"
-          className="bg-green-600 text-white px-6 py-3 rounded-md hover:bg-green-700 transition"
-        >
-          Explore Recipes
-        </Link>
+      <section className="relative text-center bg-[url('/wood-texture.jpg')] bg-cover bg-center py-28">
+        <div className="bg-black bg-opacity-40 absolute inset-0" />
+        <div className="relative z-10 px-6">
+          <h1 className="text-5xl font-semibold mb-4">RecipeVault</h1>
+          <p className="text-lg mb-6 max-w-2xl mx-auto">
+            Save and organize the recipes that matter most — accessible anywhere, anytime.
+          </p>
+          <Link
+            href="/explore"
+            className="inline-block border border-white px-6 py-3 text-white rounded hover:bg-white hover:text-black transition"
+          >
+            Explore Recipes
+          </Link>
+        </div>
       </section>
 
-      {/* Featured recipes */}
-      <section className="max-w-6xl mx-auto px-4 py-12">
-        <h2 className="text-2xl font-semibold mb-6">Featured Recipes</h2>
+      {/* Featured Recipes */}
+      <section className="max-w-7xl mx-auto px-6 py-16">
+        <h2 className="text-3xl font-semibold mb-10 text-center">Featured Recipes</h2>
 
         {loading ? (
-          <p>Loading recipes...</p>
+          <p className="text-center">Loading recipes...</p>
         ) : recipes.length === 0 ? (
-          <p>No recipes available yet.</p>
+          <p className="text-center">No recipes available yet.</p>
         ) : (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
             {recipes.map((recipe) => (
-              <div key={recipe.id} className="border rounded overflow-hidden hover:shadow">
+              <div key={recipe.id} className="overflow-hidden rounded-lg shadow-lg bg-white">
                 {recipe.imageUrl && (
-                  <img
+                  <Image
                     src={`${process.env.NEXT_PUBLIC_API_URL}${recipe.imageUrl}`}
                     alt={recipe.title}
-                    className="w-full h-40 object-cover"
+                    width={500}
+                    height={300}
+                    className="w-full h-60 object-cover"
                   />
                 )}
-                <div className="p-4">
-                  <h3 className="text-lg font-semibold">{recipe.title}</h3>
+                <div className="p-5">
+                  <h3 className="text-xl font-semibold mb-2">{recipe.title}</h3>
                   <Link
                     href={`/recipes/${recipe.id}`}
-                    className="text-blue-600 text-sm underline"
+                    className="text-sm text-[#6c4226] underline hover:text-[#8b5e3c]"
                   >
                     View Recipe
                   </Link>

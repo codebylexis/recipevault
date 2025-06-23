@@ -21,9 +21,6 @@ export default function EditRecipePage() {
   const [previewUrl, setPreviewUrl] = useState('');
   const [loading, setLoading] = useState(true);
 
-  // ─────────────────────────────────────────────
-  // Fetch existing recipe
-  // ─────────────────────────────────────────────
   useEffect(() => {
     const controller = new AbortController();
 
@@ -52,9 +49,6 @@ export default function EditRecipePage() {
     return () => controller.abort();
   }, [id]);
 
-  // ─────────────────────────────────────────────
-  // Handlers
-  // ─────────────────────────────────────────────
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -93,44 +87,38 @@ export default function EditRecipePage() {
   };
 
   if (loading) {
-    return <p className="p-10 text-center">Loading…</p>;
+    return <p className="p-10 text-center text-gray-600 font-serif">Loading…</p>;
   }
 
-  // ─────────────────────────────────────────────
-  // UI
-  // ─────────────────────────────────────────────
   return (
-    <div className="p-8 max-w-4xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6">✏️ Edit Recipe</h1>
+    <div className="p-8 max-w-4xl mx-auto font-serif text-[#3c2f28]">
+      <h1 className="text-3xl font-semibold mb-6">Edit Recipe</h1>
 
       <form onSubmit={handleUpdate} className="space-y-6">
-        {/* Title */}
         <div>
-          <label className="block font-medium">Title</label>
+          <label className="block font-medium mb-1">Title</label>
           <input
             type="text"
-            className="w-full border px-3 py-2 rounded mt-1"
+            className="w-full border border-[#d6c7b0] px-3 py-2 rounded bg-[#fdfaf5] focus:outline-none focus:ring-2 focus:ring-[#c9a27e]"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             required
           />
         </div>
 
-        {/* Markdown */}
         <div>
-          <label className="block font-medium">Markdown Content</label>
+          <label className="block font-medium mb-1">Markdown Content</label>
           <textarea
             rows={10}
-            className="w-full border px-3 py-2 rounded mt-1"
+            className="w-full border border-[#d6c7b0] px-3 py-2 rounded bg-[#fdfaf5] focus:outline-none focus:ring-2 focus:ring-[#c9a27e]"
             value={markdown}
             onChange={(e) => setMarkdown(e.target.value)}
             required
           />
         </div>
 
-        {/* Image */}
         <div>
-          <label className="block font-medium">Update Image (optional)</label>
+          <label className="block font-medium mb-1">Update Image (optional)</label>
           <input type="file" accept="image/*" onChange={handleImageChange} />
           {previewUrl && (
             <Image
@@ -145,16 +133,15 @@ export default function EditRecipePage() {
 
         <button
           type="submit"
-          className="bg-blue-600 text-white py-2 px-6 rounded hover:bg-blue-700 transition"
+          className="bg-[#a67c52] text-white py-2 px-6 rounded hover:bg-[#8c6645] transition"
         >
           Update Recipe
         </button>
       </form>
 
-      {/* Live Preview */}
       <div className="mt-10">
         <h2 className="text-2xl font-semibold mb-2">Live Preview</h2>
-        <div className="prose max-w-none bg-white p-4 rounded shadow">
+        <div className="prose max-w-none bg-[#fcfaf7] p-4 rounded shadow text-black">
           <ReactMarkdown>{markdown}</ReactMarkdown>
         </div>
       </div>
