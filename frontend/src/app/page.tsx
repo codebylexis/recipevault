@@ -46,6 +46,18 @@ export default function HomePage() {
           />
         </div>
       </section>
+       {/* Description Section */}
+      {/* Description Section */}
+<section className="max-w-3xl mx-auto text-center px-6 pb-24 text-gray-300">
+  <h2 className="text-3xl font-semibold mb-4">What is RecipeVault?</h2>
+  <p className="text-lg leading-relaxed">
+    RecipeVault is a place to save and organize your favorite recipes. You can store family recipes,
+    add new ones, and access them anytime from any device. It's simple to use and helps keep everything
+    in one spot.
+  </p>
+</section>
+
+
     </main>
   );
 }
