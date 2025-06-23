@@ -30,33 +30,45 @@ export default function HomePage() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen bg-[#fdfaf6]">
       {/* Hero section */}
-      <section className="bg-gradient-to-r from-green-100 to-green-200 py-20 text-center">
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">🍽️ Welcome to RecipeVault</h1>
-        <p className="text-lg text-gray-700 mb-6">
-          Discover, create, and manage your favorite recipes in one place.
-        </p>
-        <Link
-          href="/explore"
-          className="bg-green-600 text-white px-6 py-3 rounded-md hover:bg-green-700 transition"
-        >
-          Explore Recipes
-        </Link>
+      <section className="py-20 text-center bg-gradient-to-br from-[#fbe9d0] to-[#fff5eb]">
+        <div className="max-w-4xl mx-auto px-4">
+          <img
+            src="/cookbook.jpg"
+            alt="Cookbook"
+            className="w-24 mx-auto mb-4 rounded shadow-md"
+          />
+          <h1 className="text-4xl font-bold text-[#3b2f2f] mb-4">
+            🍲 Welcome to RecipeVault
+          </h1>
+          <p className="text-lg text-[#4b3c3c] mb-6">
+            Discover, create, and treasure your favorite recipes in a cozy home for food lovers.
+          </p>
+          <Link
+            href="/explore"
+            className="inline-block bg-[#a0522d] text-white px-6 py-3 rounded hover:bg-[#8b4513] transition"
+          >
+            Explore Recipes
+          </Link>
+        </div>
       </section>
 
       {/* Featured recipes */}
       <section className="max-w-6xl mx-auto px-4 py-12">
-        <h2 className="text-2xl font-semibold mb-6">Featured Recipes</h2>
+        <h2 className="text-2xl font-semibold text-[#5c4033] mb-6">Featured Recipes</h2>
 
         {loading ? (
-          <p>Loading recipes...</p>
+          <p className="text-[#8a6d3b]">Loading recipes...</p>
         ) : recipes.length === 0 ? (
-          <p>No recipes available yet.</p>
+          <p className="text-[#8a6d3b]">No recipes available yet.</p>
         ) : (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {recipes.map((recipe) => (
-              <div key={recipe.id} className="border rounded overflow-hidden hover:shadow">
+              <div
+                key={recipe.id}
+                className="bg-white border border-[#e0d4c1] rounded overflow-hidden shadow-sm hover:shadow-md transition"
+              >
                 {recipe.imageUrl && (
                   <img
                     src={`${process.env.NEXT_PUBLIC_API_URL}${recipe.imageUrl}`}
@@ -65,10 +77,12 @@ export default function HomePage() {
                   />
                 )}
                 <div className="p-4">
-                  <h3 className="text-lg font-semibold">{recipe.title}</h3>
+                  <h3 className="text-lg font-semibold text-[#3b2f2f]">
+                    {recipe.title}
+                  </h3>
                   <Link
                     href={`/recipes/${recipe.id}`}
-                    className="text-blue-600 text-sm underline"
+                    className="text-[#a0522d] text-sm underline"
                   >
                     View Recipe
                   </Link>
