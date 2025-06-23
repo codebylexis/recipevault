@@ -37,41 +37,45 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
-      <div className="max-w-md w-full bg-white p-6 rounded-lg shadow-md">
-        <h1 className="text-2xl font-bold mb-4 text-center">Sign Up</h1>
+    <div className="min-h-screen flex items-center justify-center bg-[#f4ede4] px-4 font-serif">
+      <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-lg border border-[#e5d9c5]">
+        <h1 className="text-3xl font-semibold mb-6 text-center text-[#4b3f2f]">Create Your Account</h1>
         <form onSubmit={handleSubmit} className="space-y-4">
           {error && <p className="text-red-500 text-sm">{error}</p>}
+
           <div>
-            <label className="block text-sm font-medium">Email</label>
+            <label className="block text-sm font-medium text-[#5c4a3c]">Email</label>
             <input
               type="email"
-              className="mt-1 w-full border rounded px-3 py-2"
+              className="mt-1 w-full border border-[#d6c7b0] rounded px-3 py-2 bg-[#fcfaf7] focus:outline-none focus:ring-2 focus:ring-[#c9a27e]"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
             />
           </div>
+
           <div>
-            <label className="block text-sm font-medium">Password</label>
+            <label className="block text-sm font-medium text-[#5c4a3c]">Password</label>
             <input
               type="password"
-              className="mt-1 w-full border rounded px-3 py-2"
+              className="mt-1 w-full border border-[#d6c7b0] rounded px-3 py-2 bg-[#fcfaf7] focus:outline-none focus:ring-2 focus:ring-[#c9a27e]"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
             />
           </div>
+
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+            className="w-full bg-[#a67c52] text-white py-2 rounded hover:bg-[#8c6645] transition"
           >
             Sign Up
           </button>
         </form>
-        <p className="mt-4 text-center text-sm">
+
+        <p className="mt-6 text-center text-sm text-[#5c4a3c]">
           Already have an account?{' '}
-          <a href="/login" className="text-blue-600 underline">
+          <a href="/login" className="text-[#a67c52] underline hover:text-[#8c6645]">
             Log in
           </a>
         </p>
