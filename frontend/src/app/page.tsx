@@ -20,13 +20,13 @@ export default function HomePage() {
           <div className="flex justify-center gap-4">
             <Link
               href="/signup"
-              className="bg-transparent border border-white px-6 py-3 rounded hover:bg-white hover:text-black transition"
+              className="bg-white text-black px-6 py-3 rounded hover:bg-gray-200 transition"
             >
               Create an Account
             </Link>
             <Link
               href="/login"
-              className="bg-transparent border border-white px-6 py-3 rounded hover:bg-white hover:text-black transition"
+              className="border border-white px-6 py-3 rounded text-white hover:bg-white hover:text-black transition"
             >
               Log In
             </Link>
@@ -36,28 +36,26 @@ export default function HomePage() {
 
       {/* Visual Section */}
       <section className="py-20 px-6 flex justify-center bg-[#1f1f1f]">
-        <div className="max-w-5xl w-full rounded overflow-hidden shadow-2xl">
+        <div className="max-w-7xl w-full rounded overflow-hidden shadow-2xl">
           <Image
             src="/cookbook.jpg"
             alt="Cookbook and spices"
-            width={1200}
-            height={600}
-            className="rounded w-full object-cover"
+            width={1600}
+            height={800}
+            className="w-full h-auto object-cover"
           />
         </div>
       </section>
-       {/* Description Section */}
+
       {/* Description Section */}
-<section className="max-w-3xl mx-auto text-center px-6 pb-24 text-gray-300">
-  <h2 className="text-3xl font-semibold mb-4">What is RecipeVault?</h2>
-  <p className="text-lg leading-relaxed">
-    RecipeVault is a place to save and organize your favorite recipes. You can store family recipes,
-    add new ones, and access them anytime from any device. It's simple to use and helps keep everything
-    in one spot.
-  </p>
-</section>
-
-
+      <section className="max-w-3xl mx-auto text-center px-6 pb-24 text-gray-300">
+        <h2 className="text-3xl font-semibold mb-4">What is RecipeVault?</h2>
+        <p className="text-lg leading-relaxed">
+          RecipeVault is a place to save and organize your favorite recipes. You can store family recipes,
+          add new ones, and access them anytime from any device. It&apos;s simple to use and helps keep everything
+          in one spot.
+        </p>
+      </section>
     </main>
   );
 }
