@@ -13,9 +13,9 @@ export default function Navbar() {
   const pathname = usePathname();
 
   return (
-    <header className="bg-[#1f1f1f] text-white shadow-md sticky top-0 z-50 font-serif">
+    <header className="bg-[#141414] text-white shadow-md sticky top-0 z-50 font-serif">
       <div className="max-w-screen-xl mx-auto flex items-center justify-between p-4">
-        <Link href="/" className="text-xl font-semibold tracking-tight text-white">
+        <Link href="/" className="text-xl font-semibold tracking-tight text-[#eae6df] hover:text-white">
           RecipeVault
         </Link>
         <nav className="flex gap-6 text-sm">
@@ -23,8 +23,10 @@ export default function Navbar() {
             <Link
               key={item.path}
               href={item.path}
-              className={`transition hover:text-gray-300 ${
-                pathname === item.path ? 'text-gray-100 underline' : 'text-gray-400'
+              className={`transition ${
+                pathname === item.path
+                  ? 'text-[#eae6df] underline'
+                  : 'text-[#a9a29d] hover:text-[#e0dad4]'
               }`}
             >
               {item.name}
