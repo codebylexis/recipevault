@@ -31,10 +31,10 @@ export default function HomePage() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-[#f5f3ef] text-[#3c2f28] font-serif">
+    <main className="min-h-screen bg-[#f4ede4] text-[#3c2f28] font-serif">
       {/* Hero section */}
       <section className="relative text-center bg-[url('/wood-texture.jpg')] bg-cover bg-center py-28">
-        <div className="bg-black bg-opacity-40 absolute inset-0" />
+        <div className="bg-black bg-opacity-50 absolute inset-0" />
         <div className="relative z-10 px-6">
           <h1 className="text-5xl font-semibold mb-4 text-white">RecipeVault</h1>
           <p className="text-lg mb-6 max-w-2xl mx-auto text-white">
@@ -42,7 +42,7 @@ export default function HomePage() {
           </p>
           <Link
             href="/explore"
-            className="inline-block border border-white px-6 py-3 text-white rounded hover:bg-white hover:text-black transition"
+            className="inline-block border border-white px-6 py-3 text-white rounded hover:bg-[#ede3d0] hover:text-[#3c2f28] transition"
           >
             Explore Recipes
           </Link>
@@ -51,16 +51,16 @@ export default function HomePage() {
 
       {/* Featured Recipes */}
       <section className="max-w-7xl mx-auto px-6 py-16">
-        <h2 className="text-3xl font-semibold mb-10 text-center">Featured Recipes</h2>
+        <h2 className="text-3xl font-semibold mb-10 text-center text-[#3c2f28]">Featured Recipes</h2>
 
         {loading ? (
-          <p className="text-center">Loading recipes...</p>
+          <p className="text-center text-[#3c2f28]">Loading recipes...</p>
         ) : recipes.length === 0 ? (
-          <p className="text-center">No recipes available yet.</p>
+          <p className="text-center text-[#3c2f28]">No recipes available yet.</p>
         ) : (
           <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
             {recipes.map((recipe) => (
-              <div key={recipe.id} className="overflow-hidden rounded-lg shadow-lg bg-white">
+              <div key={recipe.id} className="overflow-hidden rounded-lg shadow-lg bg-white border border-[#e9e3d8]">
                 {recipe.imageUrl && (
                   <Image
                     src={`${process.env.NEXT_PUBLIC_API_URL}${recipe.imageUrl}`}
