@@ -36,8 +36,8 @@ export default function HomePage() {
       <section className="relative text-center bg-[url('/wood-texture.jpg')] bg-cover bg-center py-28">
         <div className="bg-black bg-opacity-40 absolute inset-0" />
         <div className="relative z-10 px-6">
-          <h1 className="text-5xl font-semibold mb-4">RecipeVault</h1>
-          <p className="text-lg mb-6 max-w-2xl mx-auto">
+          <h1 className="text-5xl font-semibold mb-4 text-white">RecipeVault</h1>
+          <p className="text-lg mb-6 max-w-2xl mx-auto text-white">
             Save and organize the recipes that matter most — accessible anywhere, anytime.
           </p>
           <Link
@@ -71,10 +71,10 @@ export default function HomePage() {
                   />
                 )}
                 <div className="p-5">
-                  <h3 className="text-xl font-semibold mb-2">{recipe.title}</h3>
+                  <h3 className="text-xl font-semibold mb-2 text-[#3c2f28]">{recipe.title}</h3>
                   <Link
                     href={`/recipes/${recipe.id}`}
-                    className="text-sm text-[#6c4226] underline hover:text-[#8b5e3c]"
+                    className="text-sm text-[#7a5c42] underline hover:text-[#5a3e2c]"
                   >
                     View Recipe
                   </Link>

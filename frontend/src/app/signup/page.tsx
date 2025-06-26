@@ -47,7 +47,7 @@ export default function SignupPage() {
             <label className="block text-sm font-medium text-[#5c4a3c]">Email</label>
             <input
               type="email"
-              className="mt-1 w-full border border-[#d6c7b0] rounded px-3 py-2 bg-[#fcfaf7] focus:outline-none focus:ring-2 focus:ring-[#c9a27e]"
+              className="mt-1 w-full border border-[#d6c7b0] rounded px-3 py-2 bg-[#fcfaf7] text-black focus:outline-none focus:ring-2 focus:ring-[#c9a27e]"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -58,7 +58,7 @@ export default function SignupPage() {
             <label className="block text-sm font-medium text-[#5c4a3c]">Password</label>
             <input
               type="password"
-              className="mt-1 w-full border border-[#d6c7b0] rounded px-3 py-2 bg-[#fcfaf7] focus:outline-none focus:ring-2 focus:ring-[#c9a27e]"
+              className="mt-1 w-full border border-[#d6c7b0] rounded px-3 py-2 bg-[#fcfaf7] text-black focus:outline-none focus:ring-2 focus:ring-[#c9a27e]"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required

@@ -49,43 +49,47 @@ export default function NewRecipePage() {
   };
 
   return (
-    <div className="p-8 max-w-4xl mx-auto font-serif text-[#3c2f28]">
-      <h1 className="text-3xl font-semibold mb-6">New Recipe</h1>
-      <form onSubmit={handleSubmit} className="space-y-6">
+    <div className="min-h-screen bg-[#f4ede4] p-8 max-w-4xl mx-auto font-serif text-[#3c2f28]">
+      <h1 className="text-3xl font-semibold mb-8 text-center">New Recipe</h1>
+      <form onSubmit={handleSubmit} className="space-y-6 bg-white p-6 rounded-lg shadow-md border border-[#e5d9c5]">
+        {/* Title */}
         <div>
-          <label className="block font-medium mb-1">Title</label>
+          <label className="block font-medium mb-1 text-[#5c4a3c]">Title</label>
           <input
             type="text"
-            className="w-full border border-[#d6c7b0] bg-[#fdfaf5] px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-[#c9a27e]"
+            className="w-full border border-[#d6c7b0] bg-[#fcfaf7] px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-[#c9a27e]"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             required
           />
         </div>
 
+        {/* Content */}
         <div>
-          <label className="block font-medium mb-1">Instructions (Markdown)</label>
+          <label className="block font-medium mb-1 text-[#5c4a3c]">Instructions (Markdown)</label>
           <textarea
             rows={10}
-            className="w-full border border-[#d6c7b0] bg-[#fdfaf5] px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-[#c9a27e]"
+            className="w-full border border-[#d6c7b0] bg-[#fcfaf7] px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-[#c9a27e]"
             value={content}
             onChange={(e) => setContent(e.target.value)}
             required
           />
         </div>
 
+        {/* Tags */}
         <div>
-          <label className="block font-medium mb-1">Tags (comma-separated)</label>
+          <label className="block font-medium mb-1 text-[#5c4a3c]">Tags (comma-separated)</label>
           <input
             type="text"
-            className="w-full border border-[#d6c7b0] bg-[#fdfaf5] px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-[#c9a27e]"
+            className="w-full border border-[#d6c7b0] bg-[#fcfaf7] px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-[#c9a27e]"
             value={tags}
             onChange={(e) => setTags(e.target.value)}
           />
         </div>
 
+        {/* Image */}
         <div>
-          <label className="block font-medium mb-1">Upload Image</label>
+          <label className="block font-medium mb-1 text-[#5c4a3c]">Upload Image</label>
           <input
             type="file"
             accept="image/*"
@@ -101,9 +105,10 @@ export default function NewRecipePage() {
           )}
         </div>
 
+        {/* Submit */}
         <button
           type="submit"
-          className="bg-[#8b5e3c] text-white py-2 px-6 rounded hover:bg-[#6c4226] transition"
+          className="w-full bg-[#8b5e3c] text-white py-2 rounded hover:bg-[#6c4226] transition"
         >
           Create Recipe
         </button>
